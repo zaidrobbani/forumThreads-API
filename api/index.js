@@ -3,14 +3,28 @@ const container = require("../src/Infrastructures/container");
 
 let server;
 
+// Helper untuk parse body dari stream
+const parseBody = (req) => {
+  return new Promise((resolve, reject) => {
+    let body = "";
+    req.on("data", (chunk) => (body += chunk.toString()));
+    req.on("end", () => {
+      try {
+        resolve(body ? JSON.parse(body) : {});
+      } catch {
+        resolve(body);
+      }
+    });
+    req.on("error", reject);
+  });
+};
+
 const handler = async (req, res) => {
   try {
-    // Log environment check (tanpa expose sensitive data)
-    console.log("Environment check:", {
-      nodeEnv: process.env.NODE_ENV,
-      hasDatabaseUrl: !!process.env.DATABASE_URL,
-      hasAccessTokenKey: !!process.env.ACCESS_TOKEN_KEY,
-      hasRefreshTokenKey: !!process.env.REFRESH_TOKEN_KEY,
+    console.log("Request received:", {
+      method: req.method,
+      url: req.url,
+      headers: req.headers,
     });
 
     // Initialize server hanya sekali
@@ -21,13 +35,26 @@ const handler = async (req, res) => {
       console.log("Server initialized successfully");
     }
 
+    // Parse body untuk POST/PUT/PATCH requests
+    let payload = req.body;
+    if (!payload && ["POST", "PUT", "PATCH"].includes(req.method)) {
+      payload = await parseBody(req);
+      console.log("Parsed payload:", payload);
+    }
+
     // Hapi.js inject method untuk serverless
+    console.log("Injecting request to Hapi...");
     const response = await server.inject({
       method: req.method,
       url: req.url,
       headers: req.headers,
-      payload: req.body,
+      payload: payload,
       remoteAddress: req.connection?.remoteAddress,
+    });
+
+    console.log("Hapi response:", {
+      statusCode: response.statusCode,
+      result: response.result,
     });
 
     // Set headers dari response Hapi
@@ -52,8 +79,7 @@ const handler = async (req, res) => {
       JSON.stringify({
         status: "error",
         message: error.message || "Internal server error",
-        details:
-          process.env.NODE_ENV !== "production" ? error.stack : undefined,
+        stack: error.stack,
       })
     );
   }
