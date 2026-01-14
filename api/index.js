@@ -5,10 +5,20 @@ let server;
 
 const handler = async (req, res) => {
   try {
+    // Log environment check (tanpa expose sensitive data)
+    console.log("Environment check:", {
+      nodeEnv: process.env.NODE_ENV,
+      hasDatabaseUrl: !!process.env.DATABASE_URL,
+      hasAccessTokenKey: !!process.env.ACCESS_TOKEN_KEY,
+      hasRefreshTokenKey: !!process.env.REFRESH_TOKEN_KEY,
+    });
+
     // Initialize server hanya sekali
     if (!server) {
+      console.log("Initializing server...");
       server = await createServer(container);
       await server.initialize();
+      console.log("Server initialized successfully");
     }
 
     // Hapi.js inject method untuk serverless
@@ -35,12 +45,15 @@ const handler = async (req, res) => {
     }
   } catch (error) {
     console.error("Error in serverless function:", error);
+    console.error("Error stack:", error.stack);
     res.statusCode = 500;
     res.setHeader("Content-Type", "application/json");
     res.end(
       JSON.stringify({
         status: "error",
         message: error.message || "Internal server error",
+        details:
+          process.env.NODE_ENV !== "production" ? error.stack : undefined,
       })
     );
   }
