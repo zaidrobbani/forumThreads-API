@@ -7,15 +7,21 @@ const threads = require("../../Interfaces/http/api/threads");
 const Jwt = require("@hapi/jwt");
 
 const createServer = async (container) => {
-  const server = Hapi.server({
-    host: process.env.APP_HOST,
-    port: process.env.PORT,
+  const serverConfig = {
     routes: {
       cors: {
         origin: ["*"],
       },
     },
-  });
+  };
+
+  // Hanya set host dan port jika bukan production (untuk local dev)
+  if (process.env.NODE_ENV !== "production") {
+    serverConfig.host = process.env.APP_HOST || "localhost";
+    serverConfig.port = process.env.PORT || 5000;
+  }
+
+  const server = Hapi.server(serverConfig);
 
   // Register JWT plugin first
   await server.register([
