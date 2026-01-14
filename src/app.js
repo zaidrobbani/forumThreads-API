@@ -2,10 +2,15 @@ require('dotenv').config();
 const createServer = require('./Infrastructures/http/createServer');
 const container = require('./Infrastructures/container');
 
-const start = async () => {
-    const server = await createServer(container);
-    await server.start();
-    console.log(`Server berjalan pada ${server.info.uri}`);
+let server;
+
+const start = async (req, res) => {
+    if (!server) {
+        server = await createServer(container);
+        await server.initialize();
+    }
+
+    server.listener(req, res);
 }
 
 start();
