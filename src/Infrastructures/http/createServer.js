@@ -74,11 +74,6 @@ const createServer = async (container) => {
 
     if (response instanceof Error) {
       // Log error untuk debugging
-      console.error("Hapi error caught:", {
-        message: response.message,
-        stack: response.stack,
-        name: response.name,
-      });
 
       const translatedError = DomainErrorTranslator.translate(response);
 
@@ -95,7 +90,6 @@ const createServer = async (container) => {
         return h.continue;
       }
 
-      console.error("Server error occurred:", translatedError);
 
       const newResponse = h.response({
         status: "error",

@@ -684,9 +684,6 @@ describe("HTTP server", () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      if (response.statusCode !== 200) {
-        console.log("Error Response:", responseJson);
-      }
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual("success");
       expect(responseJson.data.thread).toBeDefined();

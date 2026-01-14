@@ -21,29 +21,20 @@ const parseBody = (req) => {
 
 const handler = async (req, res) => {
   try {
-    console.log("Request received:", {
-      method: req.method,
-      url: req.url,
-      headers: req.headers,
-    });
 
     // Initialize server hanya sekali
     if (!server) {
-      console.log("Initializing server...");
       server = await createServer(container);
       await server.initialize();
-      console.log("Server initialized successfully");
     }
 
     // Parse body untuk POST/PUT/PATCH requests
     let payload = req.body;
     if (!payload && ["POST", "PUT", "PATCH"].includes(req.method)) {
       payload = await parseBody(req);
-      console.log("Parsed payload:", payload);
     }
 
     // Hapi.js inject method untuk serverless
-    console.log("Injecting request to Hapi...");
     const response = await server.inject({
       method: req.method,
       url: req.url,
@@ -52,10 +43,6 @@ const handler = async (req, res) => {
       remoteAddress: req.connection?.remoteAddress,
     });
 
-    console.log("Hapi response:", {
-      statusCode: response.statusCode,
-      result: response.result,
-    });
 
     // Set headers dari response Hapi
     res.statusCode = response.statusCode;
@@ -71,8 +58,7 @@ const handler = async (req, res) => {
       res.end(response.result);
     }
   } catch (error) {
-    console.error("Error in serverless function:", error);
-    console.error("Error stack:", error.stack);
+
     res.statusCode = 500;
     res.setHeader("Content-Type", "application/json");
     res.end(
