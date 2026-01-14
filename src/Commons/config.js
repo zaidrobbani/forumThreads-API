@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+const { connect } = require('http2');
 const path = require('path');
 
 if (process.env.NODE_ENV === 'test') {
@@ -16,11 +17,11 @@ const config = {
         debug: process.env.NODE_ENV !== 'development' ? {request: ['error']} : {},
     },
     database : {
-        host : process.env.PGHOST,
-        user : process.env.PGUSER,
-        database : process.env.PGDATABASE,
-        password : process.env.PGPASSWORD,
-        port : process.env.PGPORT,
+        connectionString : process.env.DATABSE_URL,
+        max: 1,
+        ssl: {
+            rejectUnauthorized: false,
+        }
     }
 }
 
