@@ -1,5 +1,4 @@
 const dotenv = require('dotenv');
-const { connect } = require('http2');
 const path = require('path');
 
 if (process.env.NODE_ENV === 'test') {
@@ -17,7 +16,7 @@ const config = {
         debug: process.env.NODE_ENV !== 'development' ? {request: ['error']} : {},
     },
     database : {
-        connectionString : process.env.DATABSE_URL,
+        connectionString : process.env.DATABASE_URL,
         max: 1,
         ssl: {
             rejectUnauthorized: false,
