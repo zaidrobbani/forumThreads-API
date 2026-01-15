@@ -1,0 +1,336 @@
+{
+  "basePath": "/",
+  "info": {
+    "title": "Forum API Documentation",
+    "version": "1.0.0",
+    "description": "API Documentation for Forum Application"
+  },
+  "securityDefinitions": {
+    "jwt": { "type": "apiKey", "name": "Authorization", "in": "header" }
+  },
+  "security": [{ "jwt": [] }],
+  "swagger": "2.0",
+  "host": "localhost:5000",
+  "schemes": ["http"],
+  "tags": [],
+  "paths": {
+    "/threads/{threadId}": {
+      "get": {
+        "summary": "Get thread detail",
+        "operationId": "getThreadsThreadid",
+        "description": "Get detailed information about a specific thread including comments and replies",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Thread ID",
+            "name": "threadId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "tags": ["threads"],
+        "responses": {
+          "default": {
+            "schema": { "type": "string" },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/authentications": {
+      "post": {
+        "summary": "User login",
+        "operationId": "postAuthentications",
+        "description": "Authenticate user and get access token",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": { "$ref": "#/definitions/Model1" }
+          }
+        ],
+        "tags": ["authentications"],
+        "responses": {
+          "default": {
+            "schema": { "type": "string" },
+            "description": "Successful"
+          }
+        }
+      },
+      "put": {
+        "summary": "Refresh access token",
+        "operationId": "putAuthentications",
+        "description": "Get new access token using refresh token",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": { "$ref": "#/definitions/Model6" }
+          }
+        ],
+        "tags": ["authentications"],
+        "responses": {
+          "default": {
+            "schema": { "type": "string" },
+            "description": "Successful"
+          }
+        }
+      },
+      "delete": {
+        "summary": "User logout",
+        "operationId": "deleteAuthentications",
+        "description": "Logout user and invalidate refresh token",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": { "$ref": "#/definitions/Model7" }
+          }
+        ],
+        "tags": ["authentications"],
+        "responses": {
+          "default": {
+            "schema": { "type": "string" },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/threads": {
+      "post": {
+        "summary": "Create new thread",
+        "operationId": "postThreads",
+        "description": "Create a new thread (requires authentication)",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": { "$ref": "#/definitions/Model2" }
+          }
+        ],
+        "tags": ["threads"],
+        "responses": {
+          "default": {
+            "schema": { "type": "string" },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "summary": "Register new user",
+        "operationId": "postUsers",
+        "description": "Create a new user account",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": { "$ref": "#/definitions/Model3" }
+          }
+        ],
+        "tags": ["users"],
+        "responses": {
+          "default": {
+            "schema": { "type": "string" },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/threads/{threadId}/comments": {
+      "post": {
+        "summary": "Add comment to thread",
+        "operationId": "postThreadsThreadidComments",
+        "description": "Add a comment to a specific thread (requires authentication)",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Thread ID",
+            "name": "threadId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": { "$ref": "#/definitions/Model4" }
+          }
+        ],
+        "tags": ["threads"],
+        "responses": {
+          "default": {
+            "schema": { "type": "string" },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/threads/{threadId}/comments/{commentId}/replies": {
+      "post": {
+        "summary": "Add reply to comment",
+        "operationId": "postThreadsThreadidCommentsCommentidReplies",
+        "description": "Add a reply to a specific comment (requires authentication)",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Thread ID",
+            "name": "threadId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Comment ID",
+            "name": "commentId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": { "$ref": "#/definitions/Model5" }
+          }
+        ],
+        "tags": ["threads"],
+        "responses": {
+          "default": {
+            "schema": { "type": "string" },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/threads/{threadId}/comments/{commentId}": {
+      "delete": {
+        "summary": "Delete comment",
+        "operationId": "deleteThreadsThreadidCommentsCommentid",
+        "description": "Delete a specific comment (requires authentication and ownership)",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Thread ID",
+            "name": "threadId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Comment ID",
+            "name": "commentId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "tags": ["threads"],
+        "responses": {
+          "default": {
+            "schema": { "type": "string" },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/threads/{threadId}/comments/{commentId}/replies/{replyId}": {
+      "delete": {
+        "summary": "Delete reply",
+        "operationId": "deleteThreadsThreadidCommentsCommentidRepliesReplyid",
+        "description": "Delete a specific reply (requires authentication and ownership)",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "Thread ID",
+            "name": "threadId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Comment ID",
+            "name": "commentId",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "string",
+            "description": "Reply ID",
+            "name": "replyId",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "tags": ["threads"],
+        "responses": {
+          "default": {
+            "schema": { "type": "string" },
+            "description": "Successful"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Model1": {
+      "type": "object",
+      "properties": {
+        "username": { "type": "string", "description": "Username" },
+        "password": { "type": "string", "description": "Password" }
+      },
+      "required": ["username", "password"]
+    },
+    "Model2": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Thread title" },
+        "body": { "type": "string", "description": "Thread content" }
+      },
+      "required": ["title", "body"]
+    },
+    "Model3": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "Username for the new user"
+        },
+        "password": {
+          "type": "string",
+          "description": "Password for the new user"
+        },
+        "fullname": { "type": "string", "description": "Full name of the user" }
+      },
+      "required": ["username", "password", "fullname"]
+    },
+    "Model4": {
+      "type": "object",
+      "properties": {
+        "content": { "type": "string", "description": "Comment content" }
+      },
+      "required": ["content"]
+    },
+    "Model5": {
+      "type": "object",
+      "properties": {
+        "content": { "type": "string", "description": "Reply content" }
+      },
+      "required": ["content"]
+    },
+    "Model6": {
+      "type": "object",
+      "properties": {
+        "refreshToken": { "type": "string", "description": "Refresh token" }
+      },
+      "required": ["refreshToken"]
+    },
+    "Model7": {
+      "type": "object",
+      "properties": {
+        "refreshToken": {
+          "type": "string",
+          "description": "Refresh token to be deleted"
+        }
+      },
+      "required": ["refreshToken"]
+    }
+  }
+}
