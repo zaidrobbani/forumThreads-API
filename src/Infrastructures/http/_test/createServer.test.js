@@ -1,11 +1,11 @@
-const pool = require("../../database/postgres/pool");
-const UsersTableTestHelper = require("../../../../tests/UserTableTestHelper");
-const ThreadsTableTestHelper = require("../../../../tests/ThreadsTableTestHelper");
-const CommentsTableTestHelper = require("../../../../tests/CommentsTableTestHelper");
-const RepliesTableTestHelper = require("../../../../tests/RepliesTableTestHelper");
-const AuthenticationsTableTestHelper = require("../../../../tests/AuthenticationsTableTestHelper");
-const container = require("../../container");
-const createServer = require("../createServer");
+import pool from "../../database/postgres/pool.js";
+import UsersTableTestHelper from "../../../../tests/UserTableTestHelper.js";
+import ThreadsTableTestHelper from "../../../../tests/ThreadsTableTestHelper.js";
+import CommentsTableTestHelper from "../../../../tests/CommentsTableTestHelper.js";
+import RepliesTableTestHelper from "../../../../tests/RepliesTableTestHelper.js";
+import AuthenticationsTableTestHelper from "../../../../tests/AuthenticationsTableTestHelper.js";
+import container from "../../container.js";
+import createServer from "../createServer.js";
 
 describe("HTTP server", () => {
   afterAll(async () => {

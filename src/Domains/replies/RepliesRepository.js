@@ -20,4 +20,4 @@ class RepliesRepository {
   }
 }
 
-module.exports = RepliesRepository;
+export default RepliesRepository;

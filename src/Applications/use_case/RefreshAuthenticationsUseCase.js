@@ -1,37 +1,43 @@
 class RefreshAuthenticationUseCase {
-    constructor({
-        authenticationRepository,
-        authenticationTokenManager,
-    }) {
-        this._authenticationRepository = authenticationRepository;
-        this._authenticationTokenManager = authenticationTokenManager;
+  constructor({ authenticationRepository, authenticationTokenManager }) {
+    this._authenticationRepository = authenticationRepository;
+    this._authenticationTokenManager = authenticationTokenManager;
+  }
+
+  async execute(useCasePayload) {
+    this._validatePayload(useCasePayload);
+
+    const { refreshToken } = useCasePayload;
+
+    await this._authenticationTokenManager.verifyRefreshToken(refreshToken);
+
+    await this._authenticationRepository.checkAvailabilityToken(refreshToken);
+
+    const { username, id } =
+      await this._authenticationTokenManager.decodePayload(refreshToken);
+
+    const newAccessToken =
+      await this._authenticationTokenManager.createAccessToken({
+        username,
+        id,
+      });
+
+    return newAccessToken;
+  }
+
+  _validatePayload({ refreshToken }) {
+    if (!refreshToken) {
+      throw new Error(
+        "REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN"
+      );
     }
 
-    async execute(useCasePayload) {
-        this._validatePayload(useCasePayload);
-
-        const { refreshToken } = useCasePayload;
-
-        await this._authenticationTokenManager.verifyRefreshToken(refreshToken);
-
-        await this._authenticationRepository.checkAvailabilityToken(refreshToken);
-
-        const { username, id } = await this._authenticationTokenManager.decodePayload(refreshToken);
-
-        const newAccessToken = await this._authenticationTokenManager.createAccessToken({ username, id });
-
-        return newAccessToken;
+    if (typeof refreshToken !== "string") {
+      throw new Error(
+        "REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION"
+      );
     }
-
-    _validatePayload({ refreshToken }) {
-        if (!refreshToken) {
-            throw new Error('REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN');
-        }
-
-        if (typeof refreshToken !== 'string') {
-            throw new Error('REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION');
-        }
-    }
+  }
 }
 
-module.exports = RefreshAuthenticationUseCase;
+export default RefreshAuthenticationUseCase;

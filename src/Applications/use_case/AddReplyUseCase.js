@@ -1,4 +1,4 @@
-const NewReply = require("../../Domains/replies/entities/NewReply");
+import NewReply from "../../Domains/replies/entities/NewReply.js";
 
 class AddReplyUseCase {
   constructor({ replyRepository, commentRepository, threadRepository }) {
@@ -17,4 +17,4 @@ class AddReplyUseCase {
   }
 }
 
-module.exports = AddReplyUseCase;
+export default AddReplyUseCase;

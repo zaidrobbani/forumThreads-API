@@ -1,25 +1,29 @@
 class AddedComments {
-    constructor(payload) {
-        this._verifyPayload(payload);
+  constructor(payload) {
+    this._verifyPayload(payload);
 
-        const { id, content, owner } = payload;
+    const { id, content, owner } = payload;
 
-        this.id = id;
-        this.content = content;
-        this.owner = owner;
+    this.id = id;
+    this.content = content;
+    this.owner = owner;
+  }
+
+  _verifyPayload(payload) {
+    const { id, content, owner } = payload;
+
+    if (!id || !content || !owner) {
+      throw new Error("ADDED_COMMENTS.NOT_CONTAIN_NEEDED_PROPERTY");
     }
 
-    _verifyPayload(payload) {
-        const { id, content, owner } = payload;
-
-        if (!id || !content || !owner) {
-            throw new Error('ADDED_COMMENTS.NOT_CONTAIN_NEEDED_PROPERTY');
-        }
-
-        if (typeof id !== 'string' || typeof content !== 'string' || typeof owner !== 'string') {
-            throw new Error('ADDED_COMMENTS.NOT_MEET_DATA_TYPE_SPECIFICATION');
-        }
+    if (
+      typeof id !== "string" ||
+      typeof content !== "string" ||
+      typeof owner !== "string"
+    ) {
+      throw new Error("ADDED_COMMENTS.NOT_MEET_DATA_TYPE_SPECIFICATION");
     }
+  }
 }
 
-module.exports = AddedComments;
+export default AddedComments;

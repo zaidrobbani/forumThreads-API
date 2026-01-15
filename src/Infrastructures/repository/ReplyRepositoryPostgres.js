@@ -1,7 +1,7 @@
-const ReplyRepository = require("../../Domains/replies/RepliesRepository");
-const AddedReply = require("../../Domains/replies/entities/AddedReply");
-const NotFoundError = require("../../Commons/exceptions/NotFoundError");
-const AuthorizationError = require("../../Commons/exceptions/AuthorizationError");
+import ReplyRepository from "../../Domains/replies/RepliesRepository.js";
+import AddedReply from "../../Domains/replies/entities/AddedReply.js";
+import NotFoundError from "../../Commons/exceptions/NotFoundError.js";
+import AuthorizationError from "../../Commons/exceptions/AuthorizationError.js";
 
 class ReplyRepositoryPostgres extends ReplyRepository {
   constructor(pool, idGenerator) {
@@ -81,4 +81,4 @@ class ReplyRepositoryPostgres extends ReplyRepository {
   }
 }
 
-module.exports = ReplyRepositoryPostgres;
+export default ReplyRepositoryPostgres;

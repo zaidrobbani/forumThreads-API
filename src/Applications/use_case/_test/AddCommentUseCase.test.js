@@ -1,8 +1,8 @@
-const NewComments = require("../../../Domains/comments/entities/NewComments");
-const AddedComments = require("../../../Domains/comments/entities/AddedComments");
-const CommentRepository = require("../../../Domains/comments/CommentsRepository");
-const ThreadRepository = require("../../../Domains/threads/ThreadRepository");
-const AddCommentUseCase = require("../AddCommentUseCase");
+import NewComments from "../../../Domains/comments/entities/NewComments.js";
+import AddedComments from "../../../Domains/comments/entities/AddedComments.js";
+import CommentRepository from "../../../Domains/comments/CommentsRepository.js";
+import ThreadRepository from "../../../Domains/threads/ThreadRepository.js";
+import AddCommentUseCase from "../AddCommentUseCase.js";
 
 describe("AddCommentUseCase", () => {
   it("should orchestrating the add comment action correctly", async () => {
@@ -26,8 +26,8 @@ describe("AddCommentUseCase", () => {
       .fn()
       .mockImplementation(() => Promise.resolve());
     mockThreadRepository.verifyThreadOwner = jest
-        .fn()
-        .mockImplementation(() => Promise.resolve());
+      .fn()
+      .mockImplementation(() => Promise.resolve());
     mockCommentRepository.addComment = jest
       .fn()
       .mockImplementation(() => Promise.resolve(mockAddedComment));

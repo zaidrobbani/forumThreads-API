@@ -1,11 +1,11 @@
-const ClientError = require('./ClientError');
+import ClientError from "./ClientError.js";
 
-class InvariantError extends ClientError {
-    constructor(massage) {
-        super(massage, 401);
+class AuthenticationError extends ClientError {
+  constructor(massage) {
+    super(massage, 401);
 
-        this.name = 'AuthenticationError';
-    }
+    this.name = "AuthenticationError";
+  }
 }
 
-module.exports = InvariantError;
+export default AuthenticationError;

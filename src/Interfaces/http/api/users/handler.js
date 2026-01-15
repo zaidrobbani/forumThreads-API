@@ -1,4 +1,4 @@
-const AddUserUseCase = require('../../../../Applications/use_case/AddUserUseCase');
+import AddUserUseCase from "../../../../Applications/use_case/AddUserUseCase.js";
 
 class UsersHandler {
   constructor(container) {
@@ -11,7 +11,7 @@ class UsersHandler {
     const addUserUseCase = this._container.getInstance(AddUserUseCase.name);
     const addedUser = await addUserUseCase.execute(request.payload);
     const response = h.response({
-      status: 'success',
+      status: "success",
       data: {
         addedUser,
       },
@@ -21,4 +21,4 @@ class UsersHandler {
   }
 }
 
-module.exports = UsersHandler;
+export default UsersHandler;

@@ -1,11 +1,11 @@
-const InvariantError = require("../InvariantError");
+import InvariantError from "../InvariantError.js";
 
-describe('InvariantError', () => {
-    it('should create InvariantError correctly', () => {
-        const invariantError = new InvariantError('ini adalah error invariant');
+describe("InvariantError", () => {
+  it("should create InvariantError correctly", () => {
+    const invariantError = new InvariantError("ini adalah error invariant");
 
-        expect(invariantError.statusCode).toEqual(400);
-        expect(invariantError.message).toEqual('ini adalah error invariant');
-        expect(invariantError.name).toEqual('InvariantError');
-    })
-})
+    expect(invariantError.statusCode).toEqual(400);
+    expect(invariantError.message).toEqual("ini adalah error invariant");
+    expect(invariantError.name).toEqual("InvariantError");
+  });
+});

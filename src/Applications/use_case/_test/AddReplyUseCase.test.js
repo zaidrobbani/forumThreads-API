@@ -1,9 +1,9 @@
-const AddReplyUseCase = require("../AddReplyUseCase");
-const ReplyRepository = require("../../../Domains/replies/RepliesRepository");
-const CommentRepository = require("../../../Domains/comments/CommentsRepository");
-const ThreadRepository = require("../../../Domains/threads/ThreadRepository");
-const NewReply = require("../../../Domains/replies/entities/NewReply");
-const AddedReply = require("../../../Domains/replies/entities/AddedReply");
+import AddReplyUseCase from "../AddReplyUseCase.js";
+import ReplyRepository from "../../../Domains/replies/RepliesRepository.js";
+import CommentRepository from "../../../Domains/comments/CommentsRepository.js";
+import ThreadRepository from "../../../Domains/threads/ThreadRepository.js";
+import NewReply from "../../../Domains/replies/entities/NewReply.js";
+import AddedReply from "../../../Domains/replies/entities/AddedReply.js";
 
 describe("AddReplyUseCase", () => {
   it("should orchestrating the add reply action correctly", async () => {

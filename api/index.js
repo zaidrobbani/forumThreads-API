@@ -1,5 +1,5 @@
-const createServer = require("../src/Infrastructures/http/createServer");
-const container = require("../src/Infrastructures/container");
+import createServer from '../src/Infrastructures/http/createServer.js';
+import container from '../src/Infrastructures/container.js';
 
 let server;
 
@@ -71,4 +71,4 @@ const handler = async (req, res) => {
   }
 };
 
-module.exports = handler;
+export default handler;

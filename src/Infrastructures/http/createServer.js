@@ -1,10 +1,13 @@
-const Hapi = require("@hapi/hapi");
-const ClientError = require("../../Commons/exceptions/ClientError");
-const DomainErrorTranslator = require("../../Commons/exceptions/DomainErrorTranslator");
-const users = require("../../Interfaces/http/api/users");
-const authentications = require("../../Interfaces/http/api/authentications");
-const threads = require("../../Interfaces/http/api/threads");
-const Jwt = require("@hapi/jwt");
+import Hapi from "@hapi/hapi";
+import ClientError from "../../Commons/exceptions/ClientError.js";
+import DomainErrorTranslator from "../../Commons/exceptions/DomainErrorTranslator.js";
+import users from "../../Interfaces/http/api/users/index.js";
+import authentications from "../../Interfaces/http/api/authentications/index.js";
+import threads from "../../Interfaces/http/api/threads/index.js";
+import Jwt from "@hapi/jwt";
+import Inert from "@hapi/inert";
+import Vision from "@hapi/vision";
+import HapiSwagger from "hapi-swagger";
 
 const createServer = async (container) => {
   const serverConfig = {
@@ -23,7 +26,34 @@ const createServer = async (container) => {
 
   const server = Hapi.server(serverConfig);
 
-  // Register JWT plugin first
+  // Swagger configuration
+  const swaggerOptions = {
+    info: {
+      title: "Forum API Documentation",
+      version: "1.0.0",
+      description: "API Documentation for Forum Application",
+    },
+    securityDefinitions: {
+      jwt: {
+        type: "apiKey",
+        name: "Authorization",
+        in: "header",
+      },
+    },
+    security: [{ jwt: [] }],
+  };
+
+  // Register Swagger plugins
+  await server.register([
+    Inert,
+    Vision,
+    {
+      plugin: HapiSwagger,
+      options: swaggerOptions,
+    },
+  ]);
+
+  // Register JWT plugin
   await server.register([
     {
       plugin: Jwt,
@@ -90,7 +120,6 @@ const createServer = async (container) => {
         return h.continue;
       }
 
-
       const newResponse = h.response({
         status: "error",
         message: "terjadi kegagalan pada server kami",
@@ -105,4 +134,4 @@ const createServer = async (container) => {
   return server;
 };
 
-module.exports = createServer;
+export default createServer;

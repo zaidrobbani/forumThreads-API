@@ -1,4 +1,4 @@
-const DetailThread = require("../../Domains/threads/entities/Detailthread");
+import DetailThread from "../../Domains/threads/entities/Detailthread.js";
 
 class GetThreadDetailUsecase {
   constructor({ threadRepository, commentRepository, replyRepository }) {
@@ -52,4 +52,4 @@ class GetThreadDetailUsecase {
   }
 }
 
-module.exports = GetThreadDetailUsecase;
+export default GetThreadDetailUsecase;

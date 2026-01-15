@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-const pool = require("../src/Infrastructures/database/postgres/pool");
+import pool from "../src/Infrastructures/database/postgres/pool.js";
 
 const CommentsTableTestHelper = {
   async addComment({
@@ -33,4 +33,4 @@ const CommentsTableTestHelper = {
   },
 };
 
-module.exports = CommentsTableTestHelper;
+export default CommentsTableTestHelper;

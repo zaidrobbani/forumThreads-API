@@ -1,4 +1,4 @@
-const NewThread = require("../NewThread");
+import NewThread from "../NewThread.js";
 
 describe("NewThread Entities", () => {
   it("should throw when payload not contian needed property", () => {

@@ -1,4 +1,4 @@
-const pool = require("../src/Infrastructures/database/postgres/pool");
+import pool from "../src/Infrastructures/database/postgres/pool.js";
 
 const UserTableTestHelper = {
   async addUser({
@@ -29,4 +29,4 @@ const UserTableTestHelper = {
   },
 };
 
-module.exports = UserTableTestHelper;
+export default UserTableTestHelper;

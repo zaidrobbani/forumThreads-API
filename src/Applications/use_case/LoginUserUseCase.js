@@ -1,5 +1,5 @@
-const NewAuth = require("../../Domains/authentications/entities/NewAuth");
-const NewAuthentications = require("../../Domains/authentications/entities/NewAuthentications");
+import NewAuth from "../../Domains/authentications/entities/NewAuth.js";
+import NewAuthentications from "../../Domains/authentications/entities/NewAuthentications.js";
 
 class LoginUserUseCase {
   constructor({
@@ -50,4 +50,4 @@ class LoginUserUseCase {
   }
 }
 
-module.exports = LoginUserUseCase;
+export default LoginUserUseCase;

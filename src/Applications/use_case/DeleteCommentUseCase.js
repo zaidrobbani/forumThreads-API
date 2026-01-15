@@ -14,4 +14,4 @@ class DeleteCommentUseCase {
   }
 }
 
-module.exports = DeleteCommentUseCase;
+export default DeleteCommentUseCase;

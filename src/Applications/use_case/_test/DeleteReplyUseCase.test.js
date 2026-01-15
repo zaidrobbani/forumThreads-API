@@ -1,7 +1,7 @@
-const DeleteReplyUseCase = require("../DeleteReplyUseCase");
-const ReplyRepository = require("../../../Domains/replies/RepliesRepository");
-const CommentRepository = require("../../../Domains/comments/CommentsRepository");
-const ThreadRepository = require("../../../Domains/threads/ThreadRepository");
+import DeleteReplyUseCase from "../DeleteReplyUseCase.js";
+import ReplyRepository from "../../../Domains/replies/RepliesRepository.js";
+import CommentRepository from "../../../Domains/comments/CommentsRepository.js";
+import ThreadRepository from "../../../Domains/threads/ThreadRepository.js";
 
 describe("DeleteReplyUseCase", () => {
   it("should orchestrating the delete reply action correctly", async () => {

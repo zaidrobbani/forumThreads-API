@@ -1,14 +1,14 @@
-const NewThread = require('../../Domains/threads/entities/NewThread');
+import NewThread from "../../Domains/threads/entities/NewThread.js";
 
 class AddThreadUseCase {
-    constructor({threadRepository}) {
-        this._threadRepository = threadRepository;
-    }
+  constructor({ threadRepository }) {
+    this._threadRepository = threadRepository;
+  }
 
-    async execute(useCasePayload, owner) {
-        const newThread = new NewThread(useCasePayload);
-        return await this._threadRepository.addThread(newThread, owner);
-    }
+  async execute(useCasePayload, owner) {
+    const newThread = new NewThread(useCasePayload);
+    return await this._threadRepository.addThread(newThread, owner);
+  }
 }
 
-module.exports = AddThreadUseCase;
+export default AddThreadUseCase;

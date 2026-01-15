@@ -1,7 +1,7 @@
-const GetThreadDetailUseCase = require("../GetThreadDetailUseCase");
-const ThreadRepository = require("../../../Domains/threads/ThreadRepository");
-const CommentRepository = require("../../../Domains/comments/CommentsRepository");
-const ReplyRepository = require("../../../Domains/replies/RepliesRepository");
+import GetThreadDetailUseCase from "../GetThreadDetailUseCase.js";
+import ThreadRepository from "../../../Domains/threads/ThreadRepository.js";
+import CommentRepository from "../../../Domains/comments/CommentsRepository.js";
+import ReplyRepository from "../../../Domains/replies/RepliesRepository.js";
 
 describe("GetThreadDetailUseCase", () => {
   it("should orchestrating the get thread detail action correctly", async () => {

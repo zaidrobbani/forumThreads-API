@@ -1,32 +1,32 @@
-const root = require('../src/Infrastructures/database/postgres/pool');
+import pool from "../src/Infrastructures/database/postgres/pool.js";
 
 const AuthenticationsTableTestHelper = {
-    async addToken(token) {
-        const query = {
-            text: 'INSERT INTO authentications(token) VALUES($1)',
-            values: [token],
-        };
+  async addToken(token) {
+    const query = {
+      text: "INSERT INTO authentications(token) VALUES($1)",
+      values: [token],
+    };
 
-        await root.query(query);
-    },
+    await pool.query(query);
+  },
 
-    async findToken(token) {
-        const query = {
-            text: 'SELECT token FROM authentications WHERE token = $1',
-            values: [token],
-        };
+  async findToken(token) {
+    const query = {
+      text: "SELECT token FROM authentications WHERE token = $1",
+      values: [token],
+    };
 
-        const result = await root.query(query);
-        return result.rows;
-    },
+    const result = await pool.query(query);
+    return result.rows;
+  },
 
-    async cleanTable() {
-        const query = {
-            text: 'TRUNCATE TABLE authentications CASCADE'
-        };
+  async cleanTable() {
+    const query = {
+      text: "TRUNCATE TABLE authentications CASCADE",
+    };
 
-        await root.query(query);
-    }
-}
+    await pool.query(query);
+  },
+};
 
-module.exports = AuthenticationsTableTestHelper;
+export default AuthenticationsTableTestHelper;

@@ -1,2 +1,6 @@
 // Load config before all tests
-require("./src/Commons/config");
+import "./src/Commons/config.js";
+
+// Make jest globals available in ES modules
+import { jest } from "@jest/globals";
+global.jest = jest;

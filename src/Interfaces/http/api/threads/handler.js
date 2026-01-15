@@ -1,9 +1,9 @@
-const AddThreadUseCase = require("../../../../Applications/use_case/AddThreadUseCase");
-const AddCommentUseCase = require("../../../../Applications/use_case/AddCommentUseCase");
-const DeleteCommentUseCase = require("../../../../Applications/use_case/DeleteCommentUseCase");
-const AddReplyUseCase = require("../../../../Applications/use_case/AddReplyUseCase");
-const DeleteReplyUseCase = require("../../../../Applications/use_case/DeleteReplyUseCase");
-const GetThreadDetailUseCase = require("../../../../Applications/use_case/GetThreadDetailUseCase");
+import AddThreadUseCase from "../../../../Applications/use_case/AddThreadUseCase.js";
+import AddCommentUseCase from "../../../../Applications/use_case/AddCommentUseCase.js";
+import DeleteCommentUseCase from "../../../../Applications/use_case/DeleteCommentUseCase.js";
+import AddReplyUseCase from "../../../../Applications/use_case/AddReplyUseCase.js";
+import DeleteReplyUseCase from "../../../../Applications/use_case/DeleteReplyUseCase.js";
+import GetThreadDetailUseCase from "../../../../Applications/use_case/GetThreadDetailUseCase.js";
 
 class ThreadsHandler {
   constructor(container) {
@@ -125,4 +125,4 @@ class ThreadsHandler {
   }
 }
 
-module.exports = ThreadsHandler;
+export default ThreadsHandler;

@@ -16,4 +16,4 @@ class DeleteReplyUseCase {
   }
 }
 
-module.exports = DeleteReplyUseCase;
+export default DeleteReplyUseCase;
