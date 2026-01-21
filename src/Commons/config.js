@@ -22,13 +22,20 @@ const config = {
     port: process.env.PORT,
     debug: process.env.NODE_ENV !== "development" ? { request: ["error"] } : {},
   },
-  database: {
+  database: process.env.NODE_ENV !== "production" ? {
+    host: process.env.PGHOST,
+    port: process.env.PGPORT,
+    user: process.env.PGUSER,
+    password: process.env.PGPASSWORD,
+    database: process.env.PGDATABASE,
+  } : {
     connectionString: process.env.DATABASE_URL,
     max: 1,
     ssl: {
       rejectUnauthorized: false,
     },
   },
+
 };
 
 export default config;
