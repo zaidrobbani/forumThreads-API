@@ -31,8 +31,8 @@ class JwtTokenManager extends AuthenticationTokenManager {
       if (exp && Date.now() >= exp * 1000) {
         throw new Error("refresh token expired");
       }
-    } catch (error) {
-      throw new InvariantError("refresh token tidak valid" + error.message);
+    } catch {
+      throw new InvariantError("refresh token tidak valid");
     }
   }
 
