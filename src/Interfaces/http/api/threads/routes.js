@@ -10,12 +10,6 @@ const routes = (handler) => [
       tags: ["api", "threads"],
       description: "Create new thread",
       notes: "Create a new thread (requires authentication)",
-      validate: {
-        payload: Joi.object({
-          title: Joi.string().required().description("Thread title"),
-          body: Joi.string().required().description("Thread content"),
-        }),
-      },
     },
   },
   {
@@ -30,9 +24,6 @@ const routes = (handler) => [
       validate: {
         params: Joi.object({
           threadId: Joi.string().required().description("Thread ID"),
-        }),
-        payload: Joi.object({
-          content: Joi.string().required().description("Comment content"),
         }),
       },
     },
@@ -68,9 +59,6 @@ const routes = (handler) => [
         params: Joi.object({
           threadId: Joi.string().required().description("Thread ID"),
           commentId: Joi.string().required().description("Comment ID"),
-        }),
-        payload: Joi.object({
-          content: Joi.string().required().description("Reply content"),
         }),
       },
     },

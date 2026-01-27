@@ -116,21 +116,6 @@ const createServer = async (container) => {
         return newResponse;
       }
 
-      // Handle Hapi Boom errors (validation errors, dll)
-      if (response.isBoom) {
-        const { statusCode } = response.output;
-
-        // Jika error 400 (Bad Request) dari payload validation
-        if (statusCode === 400) {
-          const newResponse = h.response({
-            status: "fail",
-            message: "Pesan apapun selama tidak kosong",
-          });
-          newResponse.code(statusCode);
-          return newResponse;
-        }
-      }
-
       if (!translatedError.isServer) {
         return h.continue;
       }
