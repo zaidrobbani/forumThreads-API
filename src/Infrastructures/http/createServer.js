@@ -124,7 +124,7 @@ const createServer = async (container) => {
         if (statusCode === 400) {
           const newResponse = h.response({
             status: "fail",
-            message: translatedError.message,
+            message: "Pesan apapun selama tidak kosong",
           });
           newResponse.code(statusCode);
           return newResponse;

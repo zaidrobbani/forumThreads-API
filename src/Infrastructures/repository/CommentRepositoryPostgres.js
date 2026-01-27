@@ -34,7 +34,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError("Komentar tidak ditemukan");
+      throw new NotFoundError("Pesan apapun selama tidak kosong.");
     }
   }
 
@@ -47,13 +47,13 @@ class CommentRepositoryPostgres extends CommentRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError("comment tidak ditemukan");
+      throw new NotFoundError("Pesan apapun selama tidak kosong.");
     }
 
     const comment = result.rows[0];
 
     if (comment.owner !== owner) {
-      throw new AuthorizationError("Anda tidak berhak mengakses resource ini");
+      throw new AuthorizationError("Pesan apapun selama tidak kosong.");
     }
   }
 

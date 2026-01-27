@@ -34,7 +34,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError("Balasan tidak ditemukan");
+      throw new NotFoundError("Pesan apapun selama tidak kosong.");
     }
   }
 
@@ -47,13 +47,13 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError("Balasan tidak ditemukan");
+      throw new NotFoundError("Pesan apapun selama tidak kosong.");
     }
 
     const reply = result.rows[0];
 
     if (reply.owner !== ownerId) {
-      throw new AuthorizationError("Anda tidak berhak mengakses resource ini");
+      throw new AuthorizationError("Pesan apapun selama tidak kosong.");
     }
   }
 
