@@ -102,6 +102,21 @@ const createServer = async (container) => {
   server.ext("onPreResponse", (request, h) => {
     const { response } = request;
 
+    // Handle Hapi Boom errors (termasuk JWT authentication errors) HARUS DICEK DULU
+    if (response.isBoom) {
+      const { statusCode, payload } = response.output;
+
+      // Jika 401 atau 403, pakai format "fail"
+      if (statusCode === 401 || statusCode === 403) {
+        const newResponse = h.response({
+          status: "fail",
+          message: payload.message,
+        });
+        newResponse.code(statusCode);
+        return newResponse;
+      }
+    }
+
     if (response instanceof Error) {
       // Log error untuk debugging
 

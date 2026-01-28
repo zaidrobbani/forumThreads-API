@@ -11,11 +11,11 @@ class NewComments {
     const { content } = payload;
 
     if (!content) {
-      throw new Error("NEW_COMMENTS.NOT_CONTAIN_NEEDED_PROPERTY");
+      throw new Error("NEW_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY");
     }
 
     if (typeof content !== "string") {
-      throw new Error("NEW_COMMENTS.NOT_MEET_DATA_TYPE_SPECIFICATION");
+      throw new Error("NEW_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION");
     }
   }
 }
