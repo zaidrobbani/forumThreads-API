@@ -39,20 +39,19 @@ describe("CommentRepositoryPostgres", () => {
       const fakeIdGenerator = () => "123";
       const commentRepositoryPostgres = new CommentRepositoryPostgres(
         pool,
-        fakeIdGenerator
+        fakeIdGenerator,
       );
 
       // Action
       await commentRepositoryPostgres.addComment(
         newComment,
         "thread-123",
-        "user-123"
+        "user-123",
       );
 
       // Assert
-      const comments = await CommentsTableTestHelper.findCommentsById(
-        "comment-123"
-      );
+      const comments =
+        await CommentsTableTestHelper.findCommentsById("comment-123");
       expect(comments).toHaveLength(1);
     });
 
@@ -69,14 +68,14 @@ describe("CommentRepositoryPostgres", () => {
       const fakeIdGenerator = () => "123";
       const commentRepositoryPostgres = new CommentRepositoryPostgres(
         pool,
-        fakeIdGenerator
+        fakeIdGenerator,
       );
 
       // Action
       const addedComment = await commentRepositoryPostgres.addComment(
         newComment,
         "thread-123",
-        "user-123"
+        "user-123",
       );
 
       // Assert
@@ -85,7 +84,7 @@ describe("CommentRepositoryPostgres", () => {
           id: "comment-123",
           content: "sebuah comment",
           owner: "user-123",
-        })
+        }),
       );
     });
   });
@@ -97,7 +96,7 @@ describe("CommentRepositoryPostgres", () => {
 
       // Action & Assert
       await expect(
-        commentRepositoryPostgres.verifyCommentAvailability("comment-123")
+        commentRepositoryPostgres.verifyCommentAvailability("comment-123"),
       ).rejects.toThrow(NotFoundError);
     });
 
@@ -117,7 +116,7 @@ describe("CommentRepositoryPostgres", () => {
 
       // Action & Assert
       await expect(
-        commentRepositoryPostgres.verifyCommentAvailability("comment-123")
+        commentRepositoryPostgres.verifyCommentAvailability("comment-123"),
       ).resolves.not.toThrow(NotFoundError);
     });
   });
@@ -129,7 +128,7 @@ describe("CommentRepositoryPostgres", () => {
 
       // Action & Assert
       await expect(
-        commentRepositoryPostgres.verifyCommentOwner("comment-123", "user-123")
+        commentRepositoryPostgres.verifyCommentOwner("comment-123", "user-123"),
       ).rejects.toThrow(NotFoundError);
     });
 
@@ -149,7 +148,7 @@ describe("CommentRepositoryPostgres", () => {
 
       // Action & Assert
       await expect(
-        commentRepositoryPostgres.verifyCommentOwner("comment-123", "user-456")
+        commentRepositoryPostgres.verifyCommentOwner("comment-123", "user-456"),
       ).rejects.toThrow(AuthorizationError);
     });
 
@@ -169,7 +168,7 @@ describe("CommentRepositoryPostgres", () => {
 
       // Action & Assert
       await expect(
-        commentRepositoryPostgres.verifyCommentOwner("comment-123", "user-123")
+        commentRepositoryPostgres.verifyCommentOwner("comment-123", "user-123"),
       ).resolves.not.toThrow();
     });
   });
@@ -193,9 +192,8 @@ describe("CommentRepositoryPostgres", () => {
       await commentRepositoryPostgres.deleteComment("comment-123");
 
       // Assert
-      const comments = await CommentsTableTestHelper.findCommentsById(
-        "comment-123"
-      );
+      const comments =
+        await CommentsTableTestHelper.findCommentsById("comment-123");
       expect(comments[0].is_delete).toEqual(true);
     });
   });
@@ -216,6 +214,7 @@ describe("CommentRepositoryPostgres", () => {
         threadId: "thread-123",
         content: "sebuah comment",
         owner: "user-123",
+        date: "2021-08-08T07:19:09.775Z",
         isDelete: false,
       });
       await CommentsTableTestHelper.addComment({
@@ -223,14 +222,14 @@ describe("CommentRepositoryPostgres", () => {
         threadId: "thread-123",
         content: "comment yang dihapus",
         owner: "user-123",
+        date: "2021-08-08T07:20:09.775Z",
         isDelete: true,
       });
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action
-      const comments = await commentRepositoryPostgres.getCommentsByThreadId(
-        "thread-123"
-      );
+      const comments =
+        await commentRepositoryPostgres.getCommentsByThreadId("thread-123");
 
       // Assert
       expect(comments).toHaveLength(2);
@@ -252,9 +251,8 @@ describe("CommentRepositoryPostgres", () => {
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action
-      const comments = await commentRepositoryPostgres.getCommentsByThreadId(
-        "thread-123"
-      );
+      const comments =
+        await commentRepositoryPostgres.getCommentsByThreadId("thread-123");
 
       // Assert
       expect(comments).toHaveLength(0);
