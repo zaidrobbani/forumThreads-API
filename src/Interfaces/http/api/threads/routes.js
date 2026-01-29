@@ -98,6 +98,24 @@ const routes = (handler) => [
       },
     },
   },
+  {
+    method: "PUT",
+    path: "/threads/{threadId}/comments/{commentId}/likes",
+    handler: handler.putLikeHandler,
+    options: {
+      auth: "forumapi_jwt",
+      tags: ["api", "likes"],
+      description: "Toggle like on comment",
+      notes:
+        "Like or unlike a comment (requires authentication). If user has not liked, it will add a like. If user already liked, it will remove the like.",
+      validate: {
+        params: Joi.object({
+          threadId: Joi.string().required().description("Thread ID"),
+          commentId: Joi.string().required().description("Comment ID"),
+        }),
+      },
+    },
+  },
 ];
 
 export default routes;

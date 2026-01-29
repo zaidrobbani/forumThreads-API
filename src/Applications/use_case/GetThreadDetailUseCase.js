@@ -1,10 +1,16 @@
 import DetailThread from "../../Domains/threads/entities/Detailthread.js";
 
 class GetThreadDetailUsecase {
-  constructor({ threadRepository, commentRepository, replyRepository }) {
+  constructor({
+    threadRepository,
+    commentRepository,
+    replyRepository,
+    likeRepository,
+  }) {
     this._threadRepository = threadRepository;
     this._commentRepository = commentRepository;
     this._replyRepository = replyRepository;
+    this._likeRepository = likeRepository;
   }
 
   async execute(threadId) {
@@ -12,14 +18,16 @@ class GetThreadDetailUsecase {
 
     const threadDetail = await this._threadRepository.getThreadById(threadId);
 
-    const comment = await this._commentRepository.getCommentsByThreadId(
-      threadId
-    );
+    const comment =
+      await this._commentRepository.getCommentsByThreadId(threadId);
 
     const commentWithReplies = await Promise.all(
       comment.map(async (comment) => {
         const replies = await this._replyRepository.getRepliesByCommentId(
-          comment.id
+          comment.id,
+        );
+        const likeCount = await this._likeRepository.getLikeCountByCommentId(
+          comment.id,
         );
 
         return {
@@ -29,6 +37,7 @@ class GetThreadDetailUsecase {
           content: comment.is_delete
             ? "**komentar telah dihapus**"
             : comment.content,
+          likeCount,
           replies: replies.map((reply) => ({
             id: reply.id,
             content: reply.is_delete
@@ -38,7 +47,7 @@ class GetThreadDetailUsecase {
             username: reply.username,
           })),
         };
-      })
+      }),
     );
 
     return new DetailThread({

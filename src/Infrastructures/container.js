@@ -17,6 +17,7 @@ import AuthenticationRepositoryPostgres from "./repository/AuthenticationReposit
 import ThreadRepositoryPostgres from "./repository/ThreadRepositoryPostgres.js";
 import CommentRepositoryPostgres from "./repository/CommentRepositoryPostgres.js";
 import ReplyRepositoryPostgres from "./repository/ReplyRepositoryPostgres.js";
+import LikeRepositoryPostgres from "./repository/LikeRepositoryPostgres.js";
 
 // use case
 import AddUserUseCase from "../Applications/use_case/AddUserUseCase.js";
@@ -29,6 +30,7 @@ import DeleteCommentUseCase from "../Applications/use_case/DeleteCommentUseCase.
 import AddReplyUseCase from "../Applications/use_case/AddReplyUseCase.js";
 import DeleteReplyUseCase from "../Applications/use_case/DeleteReplyUseCase.js";
 import GetThreadDetailUseCase from "../Applications/use_case/GetThreadDetailUseCase.js";
+import ToggleLikeUseCase from "../Applications/use_case/ToggleLikeUseCase.js";
 
 // interface
 import UserRepository from "../Domains/users/UserRepository.js";
@@ -36,6 +38,7 @@ import AuthenticationRepository from "../Domains/authentications/authentications
 import ThreadRepository from "../Domains/threads/ThreadRepository.js";
 import CommentRepository from "../Domains/comments/CommentsRepository.js";
 import ReplyRepository from "../Domains/replies/RepliesRepository.js";
+import LikeRepository from "../Domains/likes/LikeRepository.js";
 import PasswordHash from "../Applications/security/PasswordHash.js";
 import AuthenticationTokenManager from "../Applications/security/AuthenticationTokenManager.js";
 
@@ -120,6 +123,20 @@ container.register([
   {
     key: ReplyRepository.name,
     Class: ReplyRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: LikeRepository.name,
+    Class: LikeRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -312,6 +329,27 @@ container.register([
         {
           name: "replyRepository",
           internal: ReplyRepository.name,
+        },
+        {
+          name: "likeRepository",
+          internal: LikeRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: ToggleLikeUseCase.name,
+    Class: ToggleLikeUseCase,
+    parameter: {
+      injectType: "destructuring",
+      dependencies: [
+        {
+          name: "likeRepository",
+          internal: LikeRepository.name,
+        },
+        {
+          name: "commentRepository",
+          internal: CommentRepository.name,
         },
       ],
     },

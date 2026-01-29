@@ -2,6 +2,7 @@ import GetThreadDetailUseCase from "../GetThreadDetailUseCase.js";
 import ThreadRepository from "../../../Domains/threads/ThreadRepository.js";
 import CommentRepository from "../../../Domains/comments/CommentsRepository.js";
 import ReplyRepository from "../../../Domains/replies/RepliesRepository.js";
+import LikeRepository from "../../../Domains/likes/LikeRepository.js";
 
 describe("GetThreadDetailUseCase", () => {
   it("should orchestrating the get thread detail action correctly", async () => {
@@ -48,6 +49,7 @@ describe("GetThreadDetailUseCase", () => {
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
+    const mockLikeRepository = new LikeRepository();
 
     mockThreadRepository.verifyThreadAvailability = jest
       .fn()
@@ -69,11 +71,20 @@ describe("GetThreadDetailUseCase", () => {
         }
         return Promise.resolve(mockRepliesForComment456);
       });
+    mockLikeRepository.getLikeCountByCommentId = jest
+      .fn()
+      .mockImplementation((commentId) => {
+        if (commentId === "comment-123") {
+          return Promise.resolve(2);
+        }
+        return Promise.resolve(0);
+      });
 
     const getThreadDetailUseCase = new GetThreadDetailUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
       replyRepository: mockReplyRepository,
+      likeRepository: mockLikeRepository,
     });
 
     // Action
@@ -81,27 +92,35 @@ describe("GetThreadDetailUseCase", () => {
 
     // Assert
     expect(mockThreadRepository.verifyThreadAvailability).toHaveBeenCalledWith(
-      threadId
+      threadId,
     );
     expect(mockThreadRepository.getThreadById).toHaveBeenCalledWith(threadId);
     expect(mockCommentRepository.getCommentsByThreadId).toHaveBeenCalledWith(
-      threadId
+      threadId,
     );
     expect(mockReplyRepository.getRepliesByCommentId).toHaveBeenCalledWith(
-      "comment-123"
+      "comment-123",
     );
     expect(mockReplyRepository.getRepliesByCommentId).toHaveBeenCalledWith(
-      "comment-456"
+      "comment-456",
     );
 
     expect(detailThread.comments).toHaveLength(2);
     expect(detailThread.comments[0].content).toEqual("sebuah comment");
     expect(detailThread.comments[1].content).toEqual(
-      "**komentar telah dihapus**"
+      "**komentar telah dihapus**",
     );
     expect(detailThread.comments[0].replies).toHaveLength(1);
     expect(detailThread.comments[0].replies[0].content).toEqual(
-      "sebuah balasan"
+      "sebuah balasan",
+    );
+    expect(detailThread.comments[0].likeCount).toEqual(2);
+    expect(detailThread.comments[1].likeCount).toEqual(0);
+    expect(mockLikeRepository.getLikeCountByCommentId).toHaveBeenCalledWith(
+      "comment-123",
+    );
+    expect(mockLikeRepository.getLikeCountByCommentId).toHaveBeenCalledWith(
+      "comment-456",
     );
   });
 
@@ -140,6 +159,7 @@ describe("GetThreadDetailUseCase", () => {
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
+    const mockLikeRepository = new LikeRepository();
 
     mockThreadRepository.verifyThreadAvailability = jest
       .fn()
@@ -153,11 +173,15 @@ describe("GetThreadDetailUseCase", () => {
     mockReplyRepository.getRepliesByCommentId = jest
       .fn()
       .mockImplementation(() => Promise.resolve(mockReplies));
+    mockLikeRepository.getLikeCountByCommentId = jest
+      .fn()
+      .mockImplementation(() => Promise.resolve(0));
 
     const getThreadDetailUseCase = new GetThreadDetailUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
       replyRepository: mockReplyRepository,
+      likeRepository: mockLikeRepository,
     });
 
     // Action
@@ -165,7 +189,7 @@ describe("GetThreadDetailUseCase", () => {
 
     // Assert
     expect(detailThread.comments[0].replies[0].content).toEqual(
-      "**balasan telah dihapus**"
+      "**balasan telah dihapus**",
     );
   });
 });

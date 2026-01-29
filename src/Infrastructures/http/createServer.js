@@ -8,6 +8,7 @@ import Jwt from "@hapi/jwt";
 import Inert from "@hapi/inert";
 import Vision from "@hapi/vision";
 import HapiSwagger from "hapi-swagger";
+import HapiRateLimit from "hapi-rate-limit";
 
 const createServer = async (container) => {
   const serverConfig = {
@@ -59,6 +60,22 @@ const createServer = async (container) => {
       plugin: Jwt,
     },
   ]);
+
+  // Register Rate Limit plugin (disabled for testing)
+  if (process.env.NODE_ENV !== "test") {
+    await server.register({
+      plugin: HapiRateLimit,
+      options: {
+        enabled: true,
+        userLimit: 90, // 90 requests
+        userCache: {
+          expiresIn: 60000, // per 60 detik
+        },
+        pathLimit: false,
+        headers: true,
+      },
+    });
+  }
 
   // Define authentication strategy
   server.auth.strategy("forumapi_jwt", "jwt", {

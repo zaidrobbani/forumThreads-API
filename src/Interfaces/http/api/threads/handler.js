@@ -4,6 +4,7 @@ import DeleteCommentUseCase from "../../../../Applications/use_case/DeleteCommen
 import AddReplyUseCase from "../../../../Applications/use_case/AddReplyUseCase.js";
 import DeleteReplyUseCase from "../../../../Applications/use_case/DeleteReplyUseCase.js";
 import GetThreadDetailUseCase from "../../../../Applications/use_case/GetThreadDetailUseCase.js";
+import ToggleLikeUseCase from "../../../../Applications/use_case/ToggleLikeUseCase.js";
 
 class ThreadsHandler {
   constructor(container) {
@@ -15,6 +16,7 @@ class ThreadsHandler {
     this.postReplyHandler = this.postReplyHandler.bind(this);
     this.deleteReplyHandler = this.deleteReplyHandler.bind(this);
     this.getThreadDetailHandler = this.getThreadDetailHandler.bind(this);
+    this.putLikeHandler = this.putLikeHandler.bind(this);
   }
 
   async postThreadHandler(request, h) {
@@ -35,7 +37,7 @@ class ThreadsHandler {
 
   async postCommentHandler(request, h) {
     const addCommentUseCase = this._container.getInstance(
-      AddCommentUseCase.name
+      AddCommentUseCase.name,
     );
     const { id: owner } = request.auth.credentials;
     const { threadId } = request.params;
@@ -43,7 +45,7 @@ class ThreadsHandler {
     const addedComment = await addCommentUseCase.execute(
       request.payload,
       threadId,
-      owner
+      owner,
     );
 
     const response = h.response({
@@ -58,7 +60,7 @@ class ThreadsHandler {
 
   async deleteCommentHandler(request, _h) {
     const deleteCommentUseCase = this._container.getInstance(
-      DeleteCommentUseCase.name
+      DeleteCommentUseCase.name,
     );
     const { id: owner } = request.auth.credentials;
     const { threadId, commentId } = request.params;
@@ -79,7 +81,7 @@ class ThreadsHandler {
       request.payload,
       threadId,
       commentId,
-      owner
+      owner,
     );
 
     const response = h.response({
@@ -94,7 +96,7 @@ class ThreadsHandler {
 
   async deleteReplyHandler(request, _h) {
     const deleteReplyUseCase = this._container.getInstance(
-      DeleteReplyUseCase.name
+      DeleteReplyUseCase.name,
     );
     const { id: owner } = request.auth.credentials;
     const { threadId, commentId, replyId } = request.params;
@@ -108,7 +110,7 @@ class ThreadsHandler {
 
   async getThreadDetailHandler(request, h) {
     const getThreadDetailUseCase = this._container.getInstance(
-      GetThreadDetailUseCase.name
+      GetThreadDetailUseCase.name,
     );
     const { threadId } = request.params;
 
@@ -119,6 +121,22 @@ class ThreadsHandler {
       data: {
         thread,
       },
+    });
+    response.code(200);
+    return response;
+  }
+
+  async putLikeHandler(request, h) {
+    const toggleLikeUseCase = this._container.getInstance(
+      ToggleLikeUseCase.name,
+    );
+    const { id: userId } = request.auth.credentials;
+    const { commentId } = request.params;
+
+    await toggleLikeUseCase.execute({ commentId, userId });
+
+    const response = h.response({
+      status: "success",
     });
     response.code(200);
     return response;
