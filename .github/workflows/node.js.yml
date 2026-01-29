@@ -2,9 +2,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -14,34 +14,49 @@ jobs:
       matrix:
         node-version: [18.x, 20.x, 22.x]
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: forumapi_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    
-    - run: npm ci
-    
-    - name: Run database migrations
-      run: npm run migrate up
-      env:
-        PGHOST: aws-1-ap-south-1.pooler.supabase.com
-        PGPORT: 6543
-        PGUSER: postgres.vpbjdxjygyudjlgudsem
-        PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
-        PGDATABASE: postgres
-    
-    - name: Run tests
-      run: npm test
-      env:
-        NODE_ENV: test
-        PGHOST: aws-1-ap-south-1.pooler.supabase.com
-        PGPORT: 6543
-        PGUSER: postgres.vpbjdxjygyudjlgudsem
-        PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
-        PGDATABASE: postgres
-        ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
-        REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: Run database migrations
+        run: npm run migrate up
+        env:
+          PGHOST: localhost
+          PGPORT: 5432
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          PGDATABASE: forumapi_test
+
+      - name: Run tests
+        run: npm test
+        env:
+          NODE_ENV: test
+          PGHOST: localhost
+          PGPORT: 5432
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          PGDATABASE: forumapi_test
+          ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
+          REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
