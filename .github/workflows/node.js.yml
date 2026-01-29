@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -27,7 +26,7 @@ jobs:
     - run: npm ci
     
     - name: Run database migrations
-      run: npm run migrate:test up
+      run: npm run migrate up
       env:
         PGHOST: aws-1-ap-south-1.pooler.supabase.com
         PGPORT: 6543
@@ -35,7 +34,8 @@ jobs:
         PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
         PGDATABASE: postgres
     
-    - run: npm test
+    - name: Run tests
+      run: npm test
       env:
         NODE_ENV: test
         PGHOST: aws-1-ap-south-1.pooler.supabase.com
