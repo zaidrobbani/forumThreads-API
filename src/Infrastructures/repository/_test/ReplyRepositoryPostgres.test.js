@@ -42,14 +42,14 @@ describe("ReplyRepositoryPostgres", () => {
       const fakeIdGenerator = () => "123";
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(
         pool,
-        fakeIdGenerator
+        fakeIdGenerator,
       );
 
       // Action
       await replyRepositoryPostgres.addReply(
         newReply,
         "comment-123",
-        "user-123"
+        "user-123",
       );
 
       // Assert
@@ -75,14 +75,14 @@ describe("ReplyRepositoryPostgres", () => {
       const fakeIdGenerator = () => "123";
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(
         pool,
-        fakeIdGenerator
+        fakeIdGenerator,
       );
 
       // Action
       const addedReply = await replyRepositoryPostgres.addReply(
         newReply,
         "comment-123",
-        "user-123"
+        "user-123",
       );
 
       // Assert
@@ -91,7 +91,7 @@ describe("ReplyRepositoryPostgres", () => {
           id: "reply-123",
           content: "sebuah balasan",
           owner: "user-123",
-        })
+        }),
       );
     });
   });
@@ -103,7 +103,7 @@ describe("ReplyRepositoryPostgres", () => {
 
       // Action & Assert
       await expect(
-        replyRepositoryPostgres.verifyReplyAvailability("reply-123")
+        replyRepositoryPostgres.verifyReplyAvailability("reply-123"),
       ).rejects.toThrow(NotFoundError);
     });
 
@@ -128,7 +128,7 @@ describe("ReplyRepositoryPostgres", () => {
 
       // Action & Assert
       await expect(
-        replyRepositoryPostgres.verifyReplyAvailability("reply-123")
+        replyRepositoryPostgres.verifyReplyAvailability("reply-123"),
       ).resolves.not.toThrow(NotFoundError);
     });
   });
@@ -140,7 +140,7 @@ describe("ReplyRepositoryPostgres", () => {
 
       // Action & Assert
       await expect(
-        replyRepositoryPostgres.verifyReplyOwner("reply-123", "user-123")
+        replyRepositoryPostgres.verifyReplyOwner("reply-123", "user-123"),
       ).rejects.toThrow(NotFoundError);
     });
 
@@ -165,7 +165,7 @@ describe("ReplyRepositoryPostgres", () => {
 
       // Action & Assert
       await expect(
-        replyRepositoryPostgres.verifyReplyOwner("reply-123", "user-456")
+        replyRepositoryPostgres.verifyReplyOwner("reply-123", "user-456"),
       ).rejects.toThrow(AuthorizationError);
     });
 
@@ -190,7 +190,7 @@ describe("ReplyRepositoryPostgres", () => {
 
       // Action & Assert
       await expect(
-        replyRepositoryPostgres.verifyReplyOwner("reply-123", "user-123")
+        replyRepositoryPostgres.verifyReplyOwner("reply-123", "user-123"),
       ).resolves.not.toThrow();
     });
   });
@@ -257,18 +257,25 @@ describe("ReplyRepositoryPostgres", () => {
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
 
       // Action
-      const replies = await replyRepositoryPostgres.getRepliesByCommentId(
-        "comment-123"
-      );
+      const replies =
+        await replyRepositoryPostgres.getRepliesByCommentId("comment-123");
 
       // Assert
       expect(replies).toHaveLength(2);
-      expect(replies[0].id).toEqual("reply-123");
-      expect(replies[0].username).toEqual("dicoding");
-      expect(replies[0].content).toEqual("sebuah balasan");
-      expect(replies[0].is_delete).toEqual(false);
-      expect(replies[1].id).toEqual("reply-456");
-      expect(replies[1].is_delete).toEqual(true);
+
+      // Find replies by ID (order not guaranteed when dates are the same)
+      const reply123 = replies.find((r) => r.id === "reply-123");
+      const reply456 = replies.find((r) => r.id === "reply-456");
+
+      expect(reply123).toBeDefined();
+      expect(reply123.id).toEqual("reply-123");
+      expect(reply123.username).toEqual("dicoding");
+      expect(reply123.content).toEqual("sebuah balasan");
+      expect(reply123.is_delete).toEqual(false);
+
+      expect(reply456).toBeDefined();
+      expect(reply456.id).toEqual("reply-456");
+      expect(reply456.is_delete).toEqual(true);
     });
 
     it("should return empty array when no replies", async () => {
@@ -286,9 +293,8 @@ describe("ReplyRepositoryPostgres", () => {
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
 
       // Action
-      const replies = await replyRepositoryPostgres.getRepliesByCommentId(
-        "comment-123"
-      );
+      const replies =
+        await replyRepositoryPostgres.getRepliesByCommentId("comment-123");
 
       // Assert
       expect(replies).toHaveLength(0);
