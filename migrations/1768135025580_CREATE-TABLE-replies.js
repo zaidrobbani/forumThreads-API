@@ -37,7 +37,7 @@ export const up = (pgm) => {
             notNull: true,
             default: false,
         }
-    });
+    }, {ifNotExists: true});
 
     pgm.addConstraint('replies', 'fk_replies_comment_id_comments_id', {
         foreignKeys: {
@@ -46,7 +46,7 @@ export const up = (pgm) => {
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
         }   
-    });
+    }, {ifNotExists: true});
 
     pgm.addConstraint('replies', 'fk_replies_owner_users_id', {
         foreignKeys: {
@@ -55,7 +55,7 @@ export const up = (pgm) => {
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
         }   
-    });
+    }, {ifNotExists: true});
 };
 
 /**

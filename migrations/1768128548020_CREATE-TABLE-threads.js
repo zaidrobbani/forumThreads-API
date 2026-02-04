@@ -32,7 +32,7 @@ export const up = (pgm) => {
             notNull: true,
             default: pgm.func('CURRENT_TIMESTAMP'),
         },
-    })
+    }, {ifNotExists: true});
 
     pgm.addConstraint('threads', 'fk_threads_owner_users_id', {
         foreignKeys: {
@@ -41,7 +41,7 @@ export const up = (pgm) => {
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
         }
-    })
+    }, {ifNotExists: true});
 };
 
 /**

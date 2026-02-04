@@ -16,7 +16,7 @@ export const up = (pgm) => {
             notNull: true,
             primaryKey: true,
         }
-    })
+    }, {ifNotExists: true});
 };
 
 /**

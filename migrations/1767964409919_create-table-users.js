@@ -27,7 +27,7 @@ export const up = (pgm) => {
             type: 'TEXT',
             notNull: true,
         },
-    })
+    }, {ifNotExists: true});
 };
 
 /**

@@ -28,7 +28,7 @@ export const up = (pgm) => {
             notNull: true,
             default: pgm.func('CURRENT_TIMESTAMP'),
         }
-    })
+    }, {ifNotExists: true});
 
     pgm.addConstraint('user_comment_likes', 'fk_user_comment_likes_user_id_users_id', {
         foreignKeys: {
@@ -37,7 +37,7 @@ export const up = (pgm) => {
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
         }   
-    });
+    }, {ifNotExists: true});
 
     pgm.addConstraint('user_comment_likes', 'fk_user_comment_likes_comment_id_comments_id', {
         foreignKeys: {
@@ -46,11 +46,11 @@ export const up = (pgm) => {
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
         }   
-    });
+    }, {ifNotExists: true});
 
     pgm.addConstraint('user_comment_likes', 'unique_user_comment_like', {
         unique: ['user_id', 'comment_id'],
-    })
+    }, {ifNotExists: true});
 };
 
 /**

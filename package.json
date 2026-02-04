@@ -9,7 +9,8 @@
     "test": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --runInBand",
     "test:watch": "cross-env NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --watchAll --coverage --runInBand",
     "migrate": "node-pg-migrate",
-    "migrate:test": "node-pg-migrate --envPath .test.env"
+    "migrate:test": "node-pg-migrate --envPath .test.env",
+    "migrate:prod": "node-pg-migrate --database-url-var DATABASE_URL"
   },
   "keywords": [],
   "author": "",
