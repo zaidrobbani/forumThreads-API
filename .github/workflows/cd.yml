@@ -7,11 +7,11 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: SSH and deploy app
-        uses: appleboy/ssh-action@master
+        uses: actions/checkout@v4
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
