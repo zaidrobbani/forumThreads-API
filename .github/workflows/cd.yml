@@ -1,0 +1,36 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH and deploy app
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ~/auth-api
+            echo "🔄 Pulling latest code..."
+            git pull origin master
+
+            echo "📦 Installing dependencies..."
+            npm ci --omit=dev --no-audit --no-fund
+
+            echo "🗄️ Running database migrations..."
+            npm run migrate:prod up
+
+            echo "🔄 Restarting application..."
+            pm2 restart auth-api || pm2 start src/app.js --name auth-api
+
+            echo "✅ Deployment completed successfully!"
+            pm2 status
