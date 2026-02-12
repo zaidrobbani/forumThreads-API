@@ -22,7 +22,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd ~/auth-api
+            cd ~/forumThreads-API
             echo "🔄 Pulling latest code..."
             git pull origin main
 
