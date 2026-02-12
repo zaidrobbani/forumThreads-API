@@ -20,19 +20,19 @@ DomainErrorTranslator._directories = {
     "tidak dapat membuat user baru karena username mengandung karakter terlarang"
   ),
   "NEW_THREAD.NOT_CONTAIN_NEEDED_PROPERTY": new InvariantError(
-    " Pesan apapun selama tidak kosong."
+    "Pesan apapun selama tidak kosong."
   ),
   "NEW_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION": new InvariantError(
     "tidak dapat membuat thread baru karena tipe data tidak sesuai"
   ),
   "NEW_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY": new InvariantError(
-    " Pesan apapun selama tidak kosong."
+    "Pesan apapun selama tidak kosong."
   ),
   "NEW_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION": new InvariantError(
     "tidak dapat membuat comment baru karena tipe data tidak sesuai"
   ),
   "NEW_REPLY.NOT_CONTAIN_NEEDED_PROPERTY": new InvariantError(
-    " Pesan apapun selama tidak kosong."
+    "Pesan apapun selama tidak kosong."
   ),
   "NEW_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION": new InvariantError(
     "tidak dapat membuat reply baru karena tipe data tidak sesuai"
