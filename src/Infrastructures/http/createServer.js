@@ -112,6 +112,16 @@ const createServer = async (container) => {
     },
   ]);
 
+  // Health check endpoint for Docker
+  server.route({
+    method: "GET",
+    path: "/health",
+    handler: () => ({
+      status: "healthy",
+      timestamp: new Date().toISOString(),
+    }),
+  });
+
   server.ext("onPreResponse", (request, h) => {
     const { response } = request;
 

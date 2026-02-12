@@ -10,8 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
       - name: SSH and deploy app
         uses: appleboy/ssh-action@master
+
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
@@ -22,14 +26,12 @@ jobs:
             echo "🔄 Pulling latest code..."
             git pull origin main
 
-            echo "📦 Installing dependencies..."
-            npm ci --omit=dev --no-audit --no-fund
-
-            echo "🗄️ Running database migrations..."
+            echo "�️ Running database migrations..."
             npm run migrate:prod up
 
-            echo "🔄 Restarting application..."
-            pm2 restart auth-api || pm2 start src/app.js --name auth-api
+            echo "🐳 Building and deploying with Docker..."
+            sudo docker compose down
+            sudo docker compose up -d --build --remove-orphans
 
             echo "✅ Deployment completed successfully!"
-            pm2 status
+            sudo docker compose ps
