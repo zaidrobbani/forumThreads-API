@@ -142,6 +142,8 @@ const createServer = async (container) => {
 
     if (response instanceof Error) {
       // Log error untuk debugging
+      console.error("Error occurred:", response);
+      console.error("Error stack:", response.stack);
 
       const translatedError = DomainErrorTranslator.translate(response);
 
