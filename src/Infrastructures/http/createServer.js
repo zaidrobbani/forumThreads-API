@@ -138,6 +138,15 @@ const createServer = async (container) => {
         newResponse.code(statusCode);
         return newResponse;
       }
+
+      if (statusCode === 404) {
+        const newResponse = h.response({
+          status: "fail",
+          message: "Pesan apapun selama tidak kosong.",
+        });
+        newResponse.code(statusCode);
+        return newResponse;
+      }
     }
 
     if (response instanceof Error) {
